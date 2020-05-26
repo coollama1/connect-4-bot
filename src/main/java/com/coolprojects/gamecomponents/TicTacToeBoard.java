@@ -3,8 +3,8 @@ package com.coolprojects.gamecomponents;
 public class TicTacToeBoard extends Board{
 
     public TicTacToeBoard(int numberOfRows,int numberOfCols, String primarySymbol,String secondarySymbol){
-        if(numberOfRows > 10){
-            this.numberOfRows = 10;
+        if(numberOfRows > 8){
+            this.numberOfRows = 8;
         }
         else if (numberOfRows < 3){
             this.numberOfRows = 3;

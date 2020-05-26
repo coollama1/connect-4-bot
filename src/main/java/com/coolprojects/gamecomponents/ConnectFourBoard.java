@@ -15,8 +15,8 @@ public class ConnectFourBoard extends Board {
             this.numberOfRows = numberOfRows;
         }
 
-        if(numberOfCols > 10){
-            this.numberOfCols = 10;
+        if(numberOfCols > 8){
+            this.numberOfCols = 8;
         }
         else if (numberOfCols < 4){
             this.numberOfCols = 4;
@@ -54,8 +54,9 @@ public class ConnectFourBoard extends Board {
                 else if(board[c][d] == -1){
                     currentSymbol = getFormattedSecondarySymbol();
                 }
-                boardString.append(currentSymbol + "|\n");
+                boardString.append(currentSymbol + "|");
             }
+            boardString.append("\n");
         }
         boardString.append(boardFloor);
         return boardString.toString();

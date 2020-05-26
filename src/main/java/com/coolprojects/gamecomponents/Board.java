@@ -9,6 +9,12 @@ public abstract class Board {
     protected String secondarySymbol;
     protected int [][] board;
 
+    public boolean validLocationForSymbol(int rowLocation, int colLocation){
+        boolean valid = rowLocation > 0 && rowLocation < numberOfRows &&
+                        colLocation > 0 && colLocation < numberOfCols &&
+                        board[rowLocation][colLocation] == 0;
+        return valid;
+    }
 
     public void setPrimarySymbol(String primarySymbol){
         if(!primarySymbol.isEmpty() && (primarySymbol.length() <= 2 &&
