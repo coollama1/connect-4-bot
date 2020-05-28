@@ -1,6 +1,6 @@
 package com.coolprojects;
 
-import com.coolprojects.updatehandlers.CommandsHandler;
+import com.coolprojects.updatehandlers.CommandHandler;
 import com.coolprojects.utilities.Utilities;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -11,7 +11,7 @@ public class Main {
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
         try{
-            botsApi.registerBot(new CommandsHandler(Utilities.BOT_USERNAME));
+            botsApi.registerBot(new CommandHandler(Utilities.BOT_USERNAME));
         }catch(Exception exp){
             exp.printStackTrace();
         }
