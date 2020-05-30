@@ -44,6 +44,9 @@ public class ChangeSymbolCommand extends BotCommand {
                             commandFailed(absSender,chat.getId());
                         }
                     }
+                    else{
+                        playerNotParticipating(absSender,chat.getId());
+                    }
                 }
                 else{
                     invalidGameBoard(absSender,chat.getId());
