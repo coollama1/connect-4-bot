@@ -1,22 +1,18 @@
 package com.coolprojects.updatehandlers;
 
-import com.coolprojects.commands.CreateBoardCommand;
-import com.coolprojects.commands.LoveYouCommand;
-import com.coolprojects.commands.StartCommand;
+import com.coolprojects.commands.*;
 import com.coolprojects.game.components.Board;
 import com.coolprojects.game.state.GameState;
 import com.coolprojects.game.state.GameType;
-import com.coolprojects.game.state.PlayerTurn;
 import com.coolprojects.utilities.Utilities;
+import jdk.jshell.execution.Util;
+import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +38,8 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
         register(new LoveYouCommand());
         register(new StartCommand());
         register(new CreateBoardCommand());
+        register(new ChangeSymbolCommand());
+        register(new StartGameCommand());
         registerDefaultAction((absSender, message) -> {
             Long chatId = message.getChatId();
             String messageText = "Sorry, I didn't recognize the command";
@@ -144,8 +142,9 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
             if(callData.equals(CallbackValues.SET_SINGLE_PLAYER)){
                 GameState.setGameType(GameType.SINGLE_PLAYER);
                 GameState.setPrimaryPlayerId(callbackQuery.getFrom().getId());
-                Utilities.sendMessage(this,chatId,GameState.getGameBoard().getFormattedBoardString(),
-                        true);
+                GameState.setWaitingForMatchingSymbols(true);
+                String matchingSymbolMessage = "How many symbols in a row does a player need to win?";
+                Utilities.sendMessage(this,chatId,matchingSymbolMessage, true);
             }
             else if(callData.equals(CallbackValues.SET_MULTIPLAYER)){
                 GameState.setGameType(GameType.MULTI_PLAYER);
@@ -159,26 +158,74 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
             Long chatId = message.getChatId();
             Integer userId = message.getFrom().getId();
             String invalidBoardLocation = "Sorry, that's not a valid location";
-            if(message.hasText()){
-                try{
-                    if(GameState.isBoardChosen() /*&& GameState.isGameInitiated() &&
-                            GameState.isPlayerTurn(userId)*/){
+            if(message.hasText()) {
+                if(GameState.isWaitingForMatchingSymbols()){
+                    Board gameBoard = GameState.getGameBoard();
+                    int numberOfRows = gameBoard.getNumberOfRows();
+                    int numberOfCols = gameBoard.getNumberOfCols();
+                    String messageText = message.getText();
+                    if(StringUtils.isNumeric(messageText)){
+                        int matchingSymbols = Integer.parseInt(messageText);
+                        if(matchingSymbols <= Math.min(numberOfRows,numberOfCols)
+                                && matchingSymbols > 2){
+                            GameState.setNumberOfMatchingSymbolsToWin(matchingSymbols);
+                            sendGameInitiationMessage(chatId);
+                        }
+                        else{
+                            numberOutOfBounds(chatId);
+                        }
+                    }
+                    else{
+                        notNumeric(chatId);
+                    }
+                }
+                else if (GameState.isGameInitiated() && GameState.isPlayerTurn(userId)) {
+                    try {
                         String messageText = message.getText();
                         Board gameBoard = GameState.getGameBoard();
-                        if(gameBoard.placePrimarySymbol(messageText)){
+                        if (gameBoard.placePrimarySymbol(messageText)) {
                             String boardString = gameBoard.getFormattedBoardString();
-                            Utilities.sendMessage(this,message.getChatId(),boardString,true);
-                        }else{
-                            Utilities.sendMessage(this,message.getChatId(),invalidBoardLocation,false);
+                            Utilities.sendMessage(this, message.getChatId(), boardString, true);
+                        } else {
+                            Utilities.sendMessage(this, message.getChatId(), invalidBoardLocation, false);
                         }
-                    }else{
+                    } catch (Exception e) {
                         gameNotCreated(chatId);
                     }
-                }catch(Exception e){
+                }
+                else if (!GameState.isPlayerTurn(userId)){
+                    notPlayerTurn(chatId);
+                }else {
                     gameNotCreated(chatId);
                 }
             }
         }
+    }
+
+    private void sendGameInitiationMessage(Long chatId){
+        String gameInitiationMessage = "When you're ready, use the /startgame command " +
+                                        "to initiate the game. \n\nIf you want to set up a " +
+                                        "different game, just use the /start or /createboard commands";
+        Utilities.sendMessage(this,chatId,gameInitiationMessage,false);
+    }
+
+    private void numberOutOfBounds(Long chatId){
+        Board gameBoard = GameState.getGameBoard();
+        int numberOfRows = gameBoard.getNumberOfRows();
+        int numberOfCols = gameBoard.getNumberOfCols();
+        int maxMatchingSymbols = Math.min(numberOfRows,numberOfCols);
+        String errorMessage = "Number must be between 3-" + maxMatchingSymbols;
+        Utilities.sendMessage(this,chatId,errorMessage,false);
+    }
+
+    private void notNumeric(Long chatId){
+        String errorMessage = "Make sure you enter a valid number, not a symbol or letter";
+        Utilities.sendMessage(this,chatId,errorMessage,false);
+    }
+
+    private void notPlayerTurn(Long chatId){
+        String errorMessage = "It's not your turn";
+        Utilities.sendMessage(this,chatId,errorMessage,false);
     }
 
     private void gameNotCreated(Long chatId){

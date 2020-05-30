@@ -10,6 +10,14 @@ public abstract class Board {
     protected String secondarySymbol;
     protected int [][] board;
 
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public int getNumberOfCols() {
+        return numberOfCols;
+    }
+
     public boolean validLocationForSymbol(int rowLocation, int colLocation){
         boolean valid = rowLocation >= 0 && rowLocation < numberOfRows &&
                         colLocation >= 0 && colLocation < numberOfCols &&
@@ -17,24 +25,24 @@ public abstract class Board {
         return valid;
     }
 
-    public void setPrimarySymbol(String primarySymbol){
-        if(!primarySymbol.isEmpty() && (primarySymbol.length() <= 2 &&
-                (secondarySymbol == null || !primarySymbol.equals(secondarySymbol)))){
+    public boolean setPrimarySymbol(String primarySymbol){
+        if(primarySymbol != null && !primarySymbol.isEmpty() &&
+                primarySymbol.length() <= 2 &&
+                (secondarySymbol == null || !primarySymbol.equals(secondarySymbol))){
             this.primarySymbol = primarySymbol;
+            return true;
         }
-        else if(this.primarySymbol == null){
-            this.primarySymbol = "X";
-        }
+        return false;
     }
 
-    public void setSecondarySymbol(String secondarySymbol){
-        if(!secondarySymbol.isEmpty() && (secondarySymbol.length() <= 2) &&
+    public boolean setSecondarySymbol(String secondarySymbol){
+        if(secondarySymbol != null && !secondarySymbol.isEmpty() &&
+                (secondarySymbol.length() <= 2) &&
                 (primarySymbol == null || !primarySymbol.equals(secondarySymbol))){
             this.secondarySymbol = secondarySymbol;
+            return true;
         }
-        else if (this.secondarySymbol == null){
-            this.secondarySymbol = "O";
-        }
+        return false;
     }
 
     protected void placeSymbol(int rowPosition, int colPosition, int symbolValue){
@@ -45,7 +53,7 @@ public abstract class Board {
 
     protected String getFormattedSymbol(String symbol){
         if(symbol.length() > 1){
-            return symbol;
+            return symbol + " ";
         }
         else{
             return " " + symbol + " ";
