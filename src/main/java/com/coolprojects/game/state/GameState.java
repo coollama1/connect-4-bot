@@ -12,6 +12,15 @@ public class GameState {
     private static int secondaryPlayerId;
     private static int numberOfMatchingSymbolsToWin;
     private static PlayerTurn currentPlayerTurn;
+    private static boolean waitingForMatchingSymbols;
+
+    public static boolean isWaitingForMatchingSymbols() {
+        return waitingForMatchingSymbols;
+    }
+
+    public static void setWaitingForMatchingSymbols(boolean waitingForMatchingSymbols) {
+        GameState.waitingForMatchingSymbols = waitingForMatchingSymbols;
+    }
 
     public static boolean isPlayerTurn(int playerId){
         if(playerId == primaryPlayerId && currentPlayerTurn == PlayerTurn.PRIMARY_PLAYER_TURN){
@@ -65,6 +74,18 @@ public class GameState {
 
     public static int getPrimaryPlayerId() {
         return primaryPlayerId;
+    }
+
+    public static boolean setPlayerTurn(int userId){
+        if(userId == primaryPlayerId){
+            currentPlayerTurn = PlayerTurn.PRIMARY_PLAYER_TURN;
+            return true;
+        }
+        else if(userId == secondaryPlayerId){
+            currentPlayerTurn = PlayerTurn.SECONDARY_PLAYER_TURN;
+            return true;
+        }
+        return false;
     }
 
     public static void setPrimaryPlayerId(int primaryPlayerId) {

@@ -10,6 +10,14 @@ public abstract class Board {
     protected String secondarySymbol;
     protected int [][] board;
 
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public int getNumberOfCols() {
+        return numberOfCols;
+    }
+
     public boolean validLocationForSymbol(int rowLocation, int colLocation){
         boolean valid = rowLocation >= 0 && rowLocation < numberOfRows &&
                         colLocation >= 0 && colLocation < numberOfCols &&
