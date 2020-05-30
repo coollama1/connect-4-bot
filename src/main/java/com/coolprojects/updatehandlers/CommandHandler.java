@@ -1,5 +1,6 @@
 package com.coolprojects.updatehandlers;
 
+import com.coolprojects.commands.ChangeSymbolCommand;
 import com.coolprojects.commands.CreateBoardCommand;
 import com.coolprojects.commands.LoveYouCommand;
 import com.coolprojects.commands.StartCommand;
@@ -42,6 +43,7 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
         register(new LoveYouCommand());
         register(new StartCommand());
         register(new CreateBoardCommand());
+        register(new ChangeSymbolCommand());
         registerDefaultAction((absSender, message) -> {
             Long chatId = message.getChatId();
             String messageText = "Sorry, I didn't recognize the command";
