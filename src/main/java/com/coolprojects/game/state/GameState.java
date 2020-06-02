@@ -76,6 +76,10 @@ public class GameState {
         return primaryPlayerId;
     }
 
+    public static void setPlayerTurn(PlayerTurn playerTurn){
+        currentPlayerTurn = playerTurn;
+    }
+
     public static boolean setPlayerTurn(int userId){
         if(userId == primaryPlayerId){
             currentPlayerTurn = PlayerTurn.PRIMARY_PLAYER_TURN;
