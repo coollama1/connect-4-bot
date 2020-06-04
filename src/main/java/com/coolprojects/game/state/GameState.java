@@ -120,5 +120,27 @@ public class GameState {
         GameState.currentPlayerTurn = currentPlayerTurn;
     }
 
+    public static void endGame(){
+        setGameInitiated(false);
+        setBoardChosen(false);
+    }
+
+    public static Winner getWinner(int numberOfMatches){
+        Board currentBoard = getGameBoard();
+        int matchResult = currentBoard.checkForMatches(numberOfMatches);
+        if(matchResult == Board.PRIMARY_SYMBOL_VALUE){
+            return Winner.FIRST_PLAYER_WON;
+        }
+        else if(getGameType() == GameType.SINGLE_PLAYER &&
+                matchResult == Board.SECONDARY_SYMBOL_VALUE){
+                return Winner.AI_WON;
+        }
+        else if(getGameType() == GameType.MULTI_PLAYER &&
+                matchResult == Board.SECONDARY_SYMBOL_VALUE){
+
+        }
+
+        return Winner.NO_PLAYER_WON;
+    }
 
 }

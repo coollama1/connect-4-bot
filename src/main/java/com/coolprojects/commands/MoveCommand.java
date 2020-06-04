@@ -4,15 +4,11 @@ import com.coolprojects.ai.AI;
 import com.coolprojects.ai.ConnectFourAI;
 import com.coolprojects.ai.TicTacToeAI;
 import com.coolprojects.game.components.Board;
-import com.coolprojects.game.state.GameBoardType;
-import com.coolprojects.game.state.GameState;
-import com.coolprojects.game.state.GameType;
-import com.coolprojects.game.state.PlayerTurn;
+import com.coolprojects.game.state.*;
 import com.coolprojects.utilities.Utilities;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.games.Game;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 public class MoveCommand extends BotCommand {
@@ -39,8 +35,16 @@ public class MoveCommand extends BotCommand {
                 if (gameBoard.placePrimarySymbol(positionString)) {
                     String boardString = gameBoard.getFormattedBoardString();
                     Utilities.sendMessage(absSender, chatId, boardString, true);
-                    GameState.setPlayerTurn(PlayerTurn.AI_TURN);
-                    startAI(absSender,chatId);
+                    if(gameBoard.isBoardFilled()){
+                        GameState.endGame();
+                        gameBoardIsFilled(absSender,chatId);
+                    }
+                    else if(checkForWins(absSender,chatId) == Winner.NO_PLAYER_WON){
+                        GameState.setPlayerTurn(PlayerTurn.AI_TURN);
+                        startAI(absSender,chatId);
+                        checkForWins(absSender,chatId);
+                    }
+
                 }
                 else {
                     invalidLocation(absSender,chatId);
@@ -53,6 +57,23 @@ public class MoveCommand extends BotCommand {
         else{
             gameNotInitiated(absSender,chatId);
         }
+    }
+
+    private Winner checkForWins(AbsSender absSender, Long chatId ){
+        Winner currentWinner = GameState.getWinner(GameState.getNumberOfMatchingSymbolsToWin());
+        Board gameBoard = GameState.getGameBoard();
+        String boardString = gameBoard.getFormattedBoardString();
+        if(currentWinner == Winner.FIRST_PLAYER_WON){
+            GameState.endGame();
+            firstPlayerWon(absSender,chatId);
+            return currentWinner;
+        }
+        else if(currentWinner == Winner.AI_WON){
+            GameState.endGame();
+            aiWon(absSender,chatId);
+            return currentWinner;
+        }
+        return Winner.NO_PLAYER_WON;
     }
 
     private void startAI(AbsSender absSender, Long chatId){
@@ -72,6 +93,21 @@ public class MoveCommand extends BotCommand {
         String gameBoardString = gameBoard.getFormattedBoardString();
         Utilities.sendMessage(absSender,chatId,aiOutput,true);
         Utilities.sendMessage(absSender,chatId,gameBoardString,true);
+    }
+
+    private void firstPlayerWon(AbsSender absSender, Long chatId){
+        String playerWonMessage = "Seems like you won. Congrats :)";
+        Utilities.sendMessage(absSender,chatId,playerWonMessage,false);
+    }
+
+    private void aiWon(AbsSender absSender, Long chatId){
+        String playerLostMessage = "Looks like I won this game. Better luck next time :)";
+        Utilities.sendMessage(absSender,chatId,playerLostMessage,false);
+    }
+
+    private void gameBoardIsFilled(AbsSender absSender, Long chatId){
+        String errorMessage = "Game board is filled. Seems like it's a tie";
+        Utilities.sendMessage(absSender,chatId,errorMessage,false);
     }
 
     private void invalidLocation(AbsSender absSender, Long chatId){

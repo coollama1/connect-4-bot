@@ -58,5 +58,13 @@ public class Utilities {
         editMessageWithMarkup(absSender,chatId,messageId,messageText,null);
     }
 
+    public static ArrayList<Integer> intArrayToList(int [] array){
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        for(int currentNumber : array){
+            arrayList.add(currentNumber);
+        }
+        return arrayList;
+    }
+
 
 }
