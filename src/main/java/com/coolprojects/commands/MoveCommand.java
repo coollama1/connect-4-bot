@@ -35,16 +35,11 @@ public class MoveCommand extends BotCommand {
                 if (gameBoard.placePrimarySymbol(positionString)) {
                     String boardString = gameBoard.getFormattedBoardString();
                     Utilities.sendMessage(absSender, chatId, boardString, true);
-                    if(gameBoard.isBoardFilled()){
-                        GameState.endGame();
-                        gameBoardIsFilled(absSender,chatId);
-                    }
-                    else if(checkForWins(absSender,chatId) == Winner.NO_PLAYER_WON){
+                    if(checkForWins(absSender,chatId) == Winner.NO_PLAYER_WON){
                         GameState.setPlayerTurn(PlayerTurn.AI_TURN);
                         startAI(absSender,chatId);
                         checkForWins(absSender,chatId);
                     }
-
                 }
                 else {
                     invalidLocation(absSender,chatId);
@@ -60,9 +55,8 @@ public class MoveCommand extends BotCommand {
     }
 
     private Winner checkForWins(AbsSender absSender, Long chatId ){
-        Winner currentWinner = GameState.getWinner(GameState.getNumberOfMatchingSymbolsToWin());
+        Winner currentWinner = GameState.getWinner();
         Board gameBoard = GameState.getGameBoard();
-        String boardString = gameBoard.getFormattedBoardString();
         if(currentWinner == Winner.FIRST_PLAYER_WON){
             GameState.endGame();
             firstPlayerWon(absSender,chatId);
@@ -72,6 +66,10 @@ public class MoveCommand extends BotCommand {
             GameState.endGame();
             aiWon(absSender,chatId);
             return currentWinner;
+        }
+        else if(gameBoard.isBoardFilled()){
+            GameState.endGame();
+            gameBoardIsFilled(absSender,chatId);
         }
         return Winner.NO_PLAYER_WON;
     }

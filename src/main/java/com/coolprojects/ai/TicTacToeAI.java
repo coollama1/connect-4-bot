@@ -14,7 +14,7 @@ public class TicTacToeAI extends AI {
         String randomPosition;
         do{
             int randomRow = (int)(Math.random() * numberOfRows);
-            int randomCol = (int)(Math.random() * numberOfCols);
+            int randomCol = (int)(Math.random() * numberOfCols) + 1;
             String encodedRowPosition = Character.toString((char)('a' + randomRow));
             String encodedColPosition = randomCol + "";
             randomPosition = encodedRowPosition + encodedColPosition;

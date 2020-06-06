@@ -125,9 +125,9 @@ public class GameState {
         setBoardChosen(false);
     }
 
-    public static Winner getWinner(int numberOfMatches){
+    public static Winner getWinner(){
         Board currentBoard = getGameBoard();
-        int matchResult = currentBoard.checkForMatches(numberOfMatches);
+        int matchResult = currentBoard.checkForMatches(numberOfMatchingSymbolsToWin);
         if(matchResult == Board.PRIMARY_SYMBOL_VALUE){
             return Winner.FIRST_PLAYER_WON;
         }

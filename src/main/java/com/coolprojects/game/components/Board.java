@@ -129,7 +129,10 @@ public abstract class Board {
         }
         for(int c = 0; c < getNumberOfRows(); c++){
             ArrayList<Integer> currentDiagonal = diagonalToList(c,0);
+            ArrayList<Integer> currentReverseDiagonal = diagonalToListReverseRows(c,0);
             listOfDiagonals.add(currentDiagonal);
+            listOfDiagonals.add(currentReverseDiagonal);
+
         }
         return listOfDiagonals;
     }
@@ -144,6 +147,14 @@ public abstract class Board {
         return diagonal;
     }
 
+    protected ArrayList<Integer> diagonalToListReverseRows(int startRow, int startColumn){
+        ArrayList<Integer> diagonal = new ArrayList<>();
+        for(int c = startRow, d = startColumn; c >= 0 && d < getNumberOfCols(); c--,d++){
+            diagonal.add(board[c][d]);
+        }
+        return diagonal;
+    }
+
     protected ArrayList<Integer> columnToList(int targetColumn){
         ArrayList<Integer> column = new ArrayList<>();
         for(int c = 0; c < getNumberOfRows(); c++){
@@ -151,7 +162,6 @@ public abstract class Board {
         }
         return column;
     }
-
 
     public boolean setPrimarySymbol(String primarySymbol){
         if(primarySymbol != null && !primarySymbol.isEmpty() &&
