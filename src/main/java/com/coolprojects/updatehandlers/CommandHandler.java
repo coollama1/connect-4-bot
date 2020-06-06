@@ -8,9 +8,7 @@ import com.coolprojects.utilities.Utilities;
 import jdk.jshell.execution.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -40,6 +38,7 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
         register(new CreateBoardCommand());
         register(new ChangeSymbolCommand());
         register(new StartGameCommand());
+        register(new MoveCommand());
         registerDefaultAction((absSender, message) -> {
             Long chatId = message.getChatId();
             String messageText = "Sorry, I didn't recognize the command";
@@ -180,18 +179,11 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
                     }
                 }
                 else if (GameState.isGameInitiated() && GameState.isPlayerTurn(userId)) {
-                    try {
-                        String messageText = message.getText();
-                        Board gameBoard = GameState.getGameBoard();
-                        if (gameBoard.placePrimarySymbol(messageText)) {
-                            String boardString = gameBoard.getFormattedBoardString();
-                            Utilities.sendMessage(this, message.getChatId(), boardString, true);
-                        } else {
-                            Utilities.sendMessage(this, message.getChatId(), invalidBoardLocation, false);
-                        }
-                    } catch (Exception e) {
-                        gameNotCreated(chatId);
-                    }
+                    MoveCommand moveCommand = new MoveCommand();
+                    User messageUser = message.getFrom();
+                    Chat messageChat = message.getChat();
+                    String messageText = message.getText();
+                    moveCommand.runCommand(this,messageUser,messageChat,messageText);
                 }
                 else if (!GameState.isPlayerTurn(userId)){
                     notPlayerTurn(chatId);
