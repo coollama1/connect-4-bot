@@ -5,7 +5,6 @@ import com.coolprojects.game.components.Board;
 import com.coolprojects.game.state.GameState;
 import com.coolprojects.game.state.GameType;
 import com.coolprojects.utilities.Utilities;
-import jdk.jshell.execution.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.objects.*;
@@ -39,6 +38,8 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
         register(new ChangeSymbolCommand());
         register(new StartGameCommand());
         register(new MoveCommand());
+        register(new ShowBoardCommand());
+        register(new ShowIndicesCommand());
         registerDefaultAction((absSender, message) -> {
             Long chatId = message.getChatId();
             String messageText = "Sorry, I didn't recognize the command";
