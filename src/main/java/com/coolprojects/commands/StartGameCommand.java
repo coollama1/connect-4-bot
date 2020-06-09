@@ -14,8 +14,7 @@ public class StartGameCommand extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-        if(GameState.isWaitingForMatchingSymbols()){
-            GameState.setWaitingForMatchingSymbols(false);
+        if(GameState.isMatchingSymbolsSet()){
             GameState.setGameInitiated(true);
             if(GameState.setPlayerTurn(user.getId())){
                 String boardString = GameState.getGameBoard().getFormattedBoardString();

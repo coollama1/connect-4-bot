@@ -42,8 +42,9 @@ public class TicTacToeBoard extends Board{
         try{
             boolean symbolSuccessfullyPlaced = false;
             if(!encodedPosition.isEmpty() && encodedPosition.length() == 2){
-                int rowLocation = encodedPosition.toLowerCase().charAt(0) - 'a';
-                int colLocation = Integer.parseInt(encodedPosition.charAt(1) + "") - 1;
+                int rowLocation = Integer.parseInt(encodedPosition.charAt(1) + "") - 1;
+                int colLocation = encodedPosition.toLowerCase().charAt(0) - 'a';
+
                 if(validLocationForSymbol(rowLocation,colLocation)){
                     placeSymbol(rowLocation,colLocation,symbolValue);
                     symbolSuccessfullyPlaced = true;
@@ -68,7 +69,7 @@ public class TicTacToeBoard extends Board{
     @Override
     public String getInstructions(){
         String instructionsMessage = "You can make a move by either typing in the " +
-                                    "row-column index (e.g. \"a1\") or by using " +
+                                    "column-row index (e.g. \"a1\") or by using " +
                                     "the command (e.g.\"/move a1\")";
         return instructionsMessage;
     }
@@ -84,7 +85,9 @@ public class TicTacToeBoard extends Board{
     private String getTopIndices(){
         StringBuilder indices = new StringBuilder("");
         for(int c = 0; c < numberOfCols; c++){
-            indices.append(" " + (c + 1) + "  ");
+            int charOfA = 'a';
+            char currentIndex = (char)(charOfA + c);
+            indices.append(" " + currentIndex + "  ");
         }
         return indices.toString();
     }
@@ -104,9 +107,7 @@ public class TicTacToeBoard extends Board{
 
         for(int c = 0; c < numberOfRows; c++){
             if(includeIndices){
-                int charOfA = 'a';
-                char currentIndex = (char)(charOfA + c);
-                boardString.append(currentIndex + " ");
+                boardString.append((c + 1) + " ");
             }
             for(int d = 0; d < numberOfCols; d++){
                 String currentSymbol = "   ";

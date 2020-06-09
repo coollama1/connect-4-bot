@@ -13,6 +13,37 @@ public class GameState {
     private static int numberOfMatchingSymbolsToWin;
     private static PlayerTurn currentPlayerTurn;
     private static boolean waitingForMatchingSymbols;
+    private static boolean matchingSymbolsSet;
+    private static String firstPlayerName;
+    private  static String secondPlayerName;
+
+    public static boolean isPlayerInGame(int userId){
+        return (userId == primaryPlayerId) || (userId == secondaryPlayerId);
+    }
+
+    public static String getFirstPlayerName() {
+        return firstPlayerName;
+    }
+
+    public static void setFirstPlayerName(String firstPlayerName) {
+        GameState.firstPlayerName = firstPlayerName;
+    }
+
+    public static String getSecondPlayerName() {
+        return secondPlayerName;
+    }
+
+    public static void setSecondPlayerName(String secondPLayerName) {
+        GameState.secondPlayerName = secondPLayerName;
+    }
+
+    public static boolean isMatchingSymbolsSet() {
+        return matchingSymbolsSet;
+    }
+
+    public static void setMatchingSymbolsSet(boolean matchingSymbolsSet) {
+        GameState.matchingSymbolsSet = matchingSymbolsSet;
+    }
 
     public static boolean isWaitingForMatchingSymbols() {
         return waitingForMatchingSymbols;
@@ -123,6 +154,7 @@ public class GameState {
     public static void endGame(){
         setGameInitiated(false);
         setBoardChosen(false);
+        setMatchingSymbolsSet(false);
     }
 
     public static Winner getWinner(){
@@ -133,11 +165,14 @@ public class GameState {
         }
         else if(getGameType() == GameType.SINGLE_PLAYER &&
                 matchResult == Board.SECONDARY_SYMBOL_VALUE){
-                return Winner.AI_WON;
+            return Winner.AI_WON;
         }
         else if(getGameType() == GameType.MULTI_PLAYER &&
                 matchResult == Board.SECONDARY_SYMBOL_VALUE){
-
+            return Winner.SECOND_PLAYER_WON;
+        }
+        else if (gameBoard.isBoardFilled()){
+            return Winner.TIE;
         }
 
         return Winner.NO_PLAYER_WON;

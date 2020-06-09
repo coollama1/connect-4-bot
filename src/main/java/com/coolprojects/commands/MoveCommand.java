@@ -29,24 +29,34 @@ public class MoveCommand extends BotCommand {
     public void runCommand(AbsSender absSender, User user, Chat chat, String positionString){
         int userId = user.getId();
         long chatId = chat.getId();
-        if (GameState.isGameInitiated() && GameState.isPlayerTurn(userId)) {
-            try {
-                Board gameBoard = GameState.getGameBoard();
-                if (gameBoard.placePrimarySymbol(positionString)) {
-                    String boardString = gameBoard.getFormattedBoardString();
-                    Utilities.sendMessage(absSender, chatId, boardString, true);
-                    if(checkForWins(absSender,chatId) == Winner.NO_PLAYER_WON){
-                        GameState.setPlayerTurn(PlayerTurn.AI_TURN);
-                        startAI(absSender,chatId);
+        if (GameState.isGameInitiated()) {
+            if(GameState.isPlayerTurn(userId)){
+                try {
+                    Board gameBoard = GameState.getGameBoard();
+                    if (GameState.getPrimaryPlayerId() == userId && gameBoard.placePrimarySymbol(positionString)) {
+                        String boardString = gameBoard.getFormattedBoardString();
+                        Utilities.sendMessage(absSender, chatId, boardString, true);
+                        if(checkForWins(absSender,chatId) == Winner.NO_PLAYER_WON && GameState.getGameType() == GameType.SINGLE_PLAYER){
+                            GameState.setPlayerTurn(PlayerTurn.AI_TURN);
+                            startAI(absSender,chatId);
+                            checkForWins(absSender,chatId);
+                        }
+                    }
+                    else if(GameState.getSecondaryPlayerId() == userId && gameBoard.placeSecondarySymbol(positionString)){
+                        String boardString = gameBoard.getFormattedBoardString();
+                        Utilities.sendMessage(absSender, chatId, boardString, true);
                         checkForWins(absSender,chatId);
                     }
+                    else {
+                        invalidLocation(absSender,chatId);
+                    }
                 }
-                else {
-                    invalidLocation(absSender,chatId);
+                catch (Exception e) {
+                    gameNotInitiated(absSender,chatId);
                 }
             }
-            catch (Exception e) {
-                gameNotInitiated(absSender,chatId);
+            else{
+                notPlayerTurn(absSender,chatId);
             }
         }
         else{
@@ -56,22 +66,23 @@ public class MoveCommand extends BotCommand {
 
     private Winner checkForWins(AbsSender absSender, Long chatId ){
         Winner currentWinner = GameState.getWinner();
-        Board gameBoard = GameState.getGameBoard();
         if(currentWinner == Winner.FIRST_PLAYER_WON){
             GameState.endGame();
             firstPlayerWon(absSender,chatId);
-            return currentWinner;
+        }
+        else if(currentWinner == Winner.SECOND_PLAYER_WON){
+            GameState.endGame();
+            secondPlayerWon(absSender,chatId);
         }
         else if(currentWinner == Winner.AI_WON){
             GameState.endGame();
             aiWon(absSender,chatId);
-            return currentWinner;
         }
-        else if(gameBoard.isBoardFilled()){
+        else if(currentWinner == Winner.TIE){
             GameState.endGame();
-            gameBoardIsFilled(absSender,chatId);
+            gameIsTied(absSender,chatId);
         }
-        return Winner.NO_PLAYER_WON;
+        return currentWinner;
     }
 
     private void startAI(AbsSender absSender, Long chatId){
@@ -94,7 +105,14 @@ public class MoveCommand extends BotCommand {
     }
 
     private void firstPlayerWon(AbsSender absSender, Long chatId){
-        String playerWonMessage = "Seems like you won. Congrats :)";
+        String playerName = GameState.getFirstPlayerName();
+        String playerWonMessage = "Congrats, " + playerName + ". Seems like you won :)";
+        Utilities.sendMessage(absSender,chatId,playerWonMessage,false);
+    }
+
+    private void secondPlayerWon(AbsSender absSender, Long chatId){
+        String playerName = GameState.getSecondPlayerName();
+        String playerWonMessage = "Congrats, " + playerName + ". Seems like you won :)";
         Utilities.sendMessage(absSender,chatId,playerWonMessage,false);
     }
 
@@ -103,7 +121,7 @@ public class MoveCommand extends BotCommand {
         Utilities.sendMessage(absSender,chatId,playerLostMessage,false);
     }
 
-    private void gameBoardIsFilled(AbsSender absSender, Long chatId){
+    private void gameIsTied(AbsSender absSender, Long chatId){
         String errorMessage = "Game board is filled. Seems like it's a tie";
         Utilities.sendMessage(absSender,chatId,errorMessage,false);
     }
@@ -120,6 +138,11 @@ public class MoveCommand extends BotCommand {
 
     private void commandFailed(AbsSender absSender,Long chatId){
         String errorMessage = "Failed to run the command. Make sure it's formatted correctly. For example: /move a, /move a5";
+        Utilities.sendMessage(absSender,chatId,errorMessage,false);
+    }
+
+    private void notPlayerTurn(AbsSender absSender, Long chatId){
+        String errorMessage = "It's not your turn";
         Utilities.sendMessage(absSender,chatId,errorMessage,false);
     }
 }

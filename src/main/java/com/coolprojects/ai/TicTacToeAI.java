@@ -13,11 +13,12 @@ public class TicTacToeAI extends AI {
         int numberOfCols = gameBoard.getNumberOfCols();
         String randomPosition;
         do{
-            int randomRow = (int)(Math.random() * numberOfRows);
-            int randomCol = (int)(Math.random() * numberOfCols) + 1;
-            String encodedRowPosition = Character.toString((char)('a' + randomRow));
-            String encodedColPosition = randomCol + "";
-            randomPosition = encodedRowPosition + encodedColPosition;
+            int randomRow = (int)(Math.random() * numberOfCols) + 1;
+            int randomCol = (int)(Math.random() * numberOfRows);
+            String encodedRowPosition = randomRow + "";
+            String encodedColPosition  = Character.toString((char)('a' + randomCol));
+
+            randomPosition = encodedColPosition + encodedRowPosition;
         }while(!gameBoard.placeSecondarySymbol(randomPosition));
     }
 }

@@ -40,6 +40,7 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
         register(new MoveCommand());
         register(new ShowBoardCommand());
         register(new ShowIndicesCommand());
+        register(new JoinCommand());
         registerDefaultAction((absSender, message) -> {
             Long chatId = message.getChatId();
             String messageText = "Sorry, I didn't recognize the command";
@@ -142,6 +143,7 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
             if(callData.equals(CallbackValues.SET_SINGLE_PLAYER)){
                 GameState.setGameType(GameType.SINGLE_PLAYER);
                 GameState.setPrimaryPlayerId(callbackQuery.getFrom().getId());
+                GameState.setFirstPlayerName(callbackQuery.getFrom().getFirstName());
                 GameState.setWaitingForMatchingSymbols(true);
                 String matchingSymbolMessage = "How many symbols in a row does a player need to win?";
                 Utilities.sendMessage(this,chatId,matchingSymbolMessage, true);
@@ -157,7 +159,6 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
             Message message = update.getMessage();
             Long chatId = message.getChatId();
             Integer userId = message.getFrom().getId();
-            String invalidBoardLocation = "Sorry, that's not a valid location";
             if(message.hasText()) {
                 if(GameState.isWaitingForMatchingSymbols()){
                     Board gameBoard = GameState.getGameBoard();
@@ -169,6 +170,8 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
                         if(matchingSymbols <= Math.min(numberOfRows,numberOfCols)
                                 && matchingSymbols > 2){
                             GameState.setNumberOfMatchingSymbolsToWin(matchingSymbols);
+                            GameState.setWaitingForMatchingSymbols(false);
+                            GameState.setMatchingSymbolsSet(true);
                             sendGameInitiationMessage(chatId);
                         }
                         else{
@@ -179,16 +182,14 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
                         notNumeric(chatId);
                     }
                 }
-                else if (GameState.isGameInitiated() && GameState.isPlayerTurn(userId)) {
+                else if (GameState.isGameInitiated()) {
                     MoveCommand moveCommand = new MoveCommand();
                     User messageUser = message.getFrom();
                     Chat messageChat = message.getChat();
                     String messageText = message.getText();
                     moveCommand.runCommand(this,messageUser,messageChat,messageText);
                 }
-                else if (!GameState.isPlayerTurn(userId)){
-                    notPlayerTurn(chatId);
-                }else {
+                else {
                     gameNotCreated(chatId);
                 }
             }
@@ -213,11 +214,6 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
 
     private void notNumeric(Long chatId){
         String errorMessage = "Make sure you enter a valid number, not a symbol or letter";
-        Utilities.sendMessage(this,chatId,errorMessage,false);
-    }
-
-    private void notPlayerTurn(Long chatId){
-        String errorMessage = "It's not your turn";
         Utilities.sendMessage(this,chatId,errorMessage,false);
     }
 
