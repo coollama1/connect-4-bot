@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 public class MoveCommand extends BotCommand {
     public MoveCommand() {
-        super("move", "allows player to make a move by placing a symbol on the board");
+        super("mv", "allows player to make a move by placing a symbol on the board");
     }
 
     @Override
@@ -40,12 +40,16 @@ public class MoveCommand extends BotCommand {
                             GameState.setPlayerTurn(PlayerTurn.AI_TURN);
                             startAI(absSender,chatId);
                             checkForWins(absSender,chatId);
+                        }else if(GameState.getGameType() == GameType.MULTI_PLAYER){
+                            GameState.setPlayerTurn(PlayerTurn.SECONDARY_PLAYER_TURN);
                         }
                     }
                     else if(GameState.getSecondaryPlayerId() == userId && gameBoard.placeSecondarySymbol(positionString)){
                         String boardString = gameBoard.getFormattedBoardString();
                         Utilities.sendMessage(absSender, chatId, boardString, true);
-                        checkForWins(absSender,chatId);
+                        if(checkForWins(absSender,chatId) == Winner.NO_PLAYER_WON){
+                            GameState.setPlayerTurn(PlayerTurn.PRIMARY_PLAYER_TURN);
+                        }
                     }
                     else {
                         invalidLocation(absSender,chatId);
@@ -105,8 +109,11 @@ public class MoveCommand extends BotCommand {
     }
 
     private void firstPlayerWon(AbsSender absSender, Long chatId){
-        String playerName = GameState.getFirstPlayerName();
-        String playerWonMessage = "Congrats, " + playerName + ". Seems like you won :)";
+        String playerWonMessage = "Seems like you won. Congrats :)" ;
+        if(GameState.getGameType() == GameType.MULTI_PLAYER){
+            String playerName = GameState.getFirstPlayerName();
+            playerWonMessage = "Congrats, " + playerName + ". Seems like you won :)";
+        }
         Utilities.sendMessage(absSender,chatId,playerWonMessage,false);
     }
 
@@ -137,7 +144,7 @@ public class MoveCommand extends BotCommand {
     }
 
     private void commandFailed(AbsSender absSender,Long chatId){
-        String errorMessage = "Failed to run the command. Make sure it's formatted correctly. For example: /move a, /move a5";
+        String errorMessage = "Failed to run the command. Make sure it's formatted correctly. For example: /mv a, /mv a5";
         Utilities.sendMessage(absSender,chatId,errorMessage,false);
     }
 

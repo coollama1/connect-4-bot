@@ -40,7 +40,8 @@ public class JoinCommand extends BotCommand {
     }
 
     private void askForSymbols(AbsSender absSender, Long chatId){
-        String matchingSymbolMessage = "How many symbols in a row does a player need to win?";
+        String matchingSymbolMessage = "How many symbols in a row does a player need to win? You can" + "\n" +
+                "                            \"either type it in or use the matches command. (e.g. /matches 3)\";";
         Utilities.sendMessage(absSender,chatId,matchingSymbolMessage, false);
     }
 

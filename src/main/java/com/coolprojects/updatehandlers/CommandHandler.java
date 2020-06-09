@@ -41,6 +41,7 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
         register(new ShowBoardCommand());
         register(new ShowIndicesCommand());
         register(new JoinCommand());
+        register(new MatchesCommand());
         registerDefaultAction((absSender, message) -> {
             Long chatId = message.getChatId();
             String messageText = "Sorry, I didn't recognize the command";
@@ -141,18 +142,32 @@ public class CommandHandler extends TelegramLongPollingCommandBot {
 
             }
             if(callData.equals(CallbackValues.SET_SINGLE_PLAYER)){
-                GameState.setGameType(GameType.SINGLE_PLAYER);
-                GameState.setPrimaryPlayerId(callbackQuery.getFrom().getId());
-                GameState.setFirstPlayerName(callbackQuery.getFrom().getFirstName());
-                GameState.setWaitingForMatchingSymbols(true);
-                String matchingSymbolMessage = "How many symbols in a row does a player need to win?";
-                Utilities.sendMessage(this,chatId,matchingSymbolMessage, true);
+                if(GameState.isBoardChosen() && !GameState.isGameInitiated()){
+                    GameState.setGameType(GameType.SINGLE_PLAYER);
+                    GameState.setPrimaryPlayerId(callbackQuery.getFrom().getId());
+                    GameState.setFirstPlayerName(callbackQuery.getFrom().getFirstName());
+                    GameState.setWaitingForMatchingSymbols(true);
+                    String matchingSymbolMessage = "How many symbols in a row does a player need to win? You can " +
+                            "either type it in or use the matches command. (e.g. /matches 3)";
+                    Utilities.sendMessage(this,chatId,matchingSymbolMessage, true);
+                }
+                else{
+                    gameNotCreated(chatId);
+                }
+
             }
             else if(callData.equals(CallbackValues.SET_MULTIPLAYER)){
-                GameState.setGameType(GameType.MULTI_PLAYER);
-                GameState.setPrimaryPlayerId(callbackQuery.getFrom().getId());
-                String joinMessage = "If someone else wants to join, just use the /join command";
-                Utilities.sendMessage(this,chatId,joinMessage,false);
+                if(GameState.isBoardChosen() && !GameState.isGameInitiated()){
+                    GameState.setGameType(GameType.MULTI_PLAYER);
+                    GameState.setPrimaryPlayerId(callbackQuery.getFrom().getId());
+                    GameState.setFirstPlayerName(callbackQuery.getFrom().getFirstName());
+                    String joinMessage = "If someone else wants to join, just use the /join command";
+                    Utilities.sendMessage(this,chatId,joinMessage,false);
+                }
+                else{
+                    gameNotCreated(chatId);
+                }
+
             }
         }
         else if(update.hasMessage()){
