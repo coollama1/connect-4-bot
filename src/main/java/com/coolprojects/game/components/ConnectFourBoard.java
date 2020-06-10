@@ -80,7 +80,7 @@ public class ConnectFourBoard extends Board {
     public String getInstructions(){
         String instructionsMessage = "You can make a move by either typing in the " +
                                     "letter of the column, (e.g. \"a\") or by " +
-                                    "using the command (e.g. \"/move a\")";
+                                    "using the command (e.g. \"/mv a\")";
         return instructionsMessage;
     }
 

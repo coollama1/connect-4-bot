@@ -70,7 +70,7 @@ public class TicTacToeBoard extends Board{
     public String getInstructions(){
         String instructionsMessage = "You can make a move by either typing in the " +
                                     "column-row index (e.g. \"a1\") or by using " +
-                                    "the command (e.g.\"/move a1\")";
+                                    "the command (e.g.\"/mv a1\")";
         return instructionsMessage;
     }
 
