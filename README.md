@@ -28,9 +28,9 @@ Currently supports Connect 4 and Tic Tac Toe
 ## Tic Tac Toe Board
 
 ![](images/tic_tac_toe_options.jpg)
-<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<strong> Tic Tac Toe board size selection (user may select default or custom sizes) </strong>
+* <strong> Tic Tac Toe board size selection </strong>
+* <strong>(user may select default or custom sizes)</strong>
 <br>
 <br>
 
