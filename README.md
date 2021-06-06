@@ -17,6 +17,7 @@ Currently supports Connect 4 and Tic Tac Toe
 
 
 ![](images/start_menu.jpg)
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <strong> Start Menu -  User selects which game to play </strong>
 <br>
