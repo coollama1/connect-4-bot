@@ -4,8 +4,9 @@ Telegram bot that allows users to select from a variety of board games to simula
 <br><br>
 Currently supports Connect 4 and Tic Tac Toe
 <br>
+<br>
 
-## Home Screen
+## Home Screen / Start Menu
 
 ![](images/home_screen.jpg)
 <br>
@@ -18,8 +19,20 @@ Currently supports Connect 4 and Tic Tac Toe
 
 ![](images/start_menu.jpg)
 <br>
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <strong> Start Menu -  User selects which game to play </strong>
 <br>
+<br>
+
+## Tic Tac Toe Board
+
+![](images/tic_tac_toe_options.jpg)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong> Tic Tac Toe board size selection (user may select default or custom sizes) </strong>
+<br>
+<br>
+
 
 
