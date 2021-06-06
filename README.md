@@ -8,6 +8,7 @@ Currently supports Connect 4 and Tic Tac Toe
 
 ![](images/home_screen.jpg)
 <br>
+<br>
 **Home Screen where the user can start up the bot**
 
 
