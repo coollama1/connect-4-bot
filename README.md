@@ -37,9 +37,35 @@ Currently supports Connect 4 and Tic Tac Toe
 
 ![](images/tic_tac_toe_board_layout.jpg)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-* <strong> Tic Tac Toe Board layout and directions </strong>
+* <strong> Tic Tac Toe Board layout and game directions </strong>
 * <strong>Player may select between single and multiplayer modes</strong>
 <br>
 <br>
 
+![](images/board_matches.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+* <strong> Player chooses how many moves are required to win the game </strong>
+* <strong>Player may either type in the amount or use the /matches command</strong>
+<br>
+<br>
 
+![](images/tic_tac_toe_move.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+* <strong> Player makes a move by typing in the desired location to move </strong>
+* <strong>The Board is displayed with the player's mark placed at the desired location</strong>
+<br>
+<br>
+
+![](images/changing_symbol.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+* <strong> Player may change their symbol by using the /changesymbol command </strong>
+* <strong>Symbol can be changed to any character or emoji on the keyboard</strong>
+<br>
+<br>
+
+![](images/tic_tac_toe_win.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+* <strong> The player is notified once they win the game </strong>
+* <strong>Number of adjacent matching symbols must equal to <br> the number set at the beginning of the game</strong>
+<br>
+<br>
