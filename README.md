@@ -6,7 +6,7 @@ Currently supports Connect 4 and Tic Tac Toe
 
 ## Home Screen
 
-<img src="images/home_screen.jpg" width="350" height="600">
+<img src="images/home_screen.jpg" width="400" height="700">
 <br>
 <br>
 **Home Screen where the user can start up the bot**
