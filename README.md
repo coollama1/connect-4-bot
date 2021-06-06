@@ -24,15 +24,22 @@ Currently supports Connect 4 and Tic Tac Toe
 <strong> Start Menu -  User selects which game to play </strong>
 <br>
 <br>
+<br>
 
 ## Tic Tac Toe Board
 
 ![](images/tic_tac_toe_options.jpg)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 * <strong> Tic Tac Toe board size selection </strong>
-* <strong>(user may select default or custom sizes)</strong>
+* <strong>Player may select default or custom sizes</strong>
 <br>
 <br>
 
+![](images/tic_tac_toe_board_layout.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+* <strong> Tic Tac Toe Board layout and directions </strong>
+* <strong>Player may select between single and multiplayer modes</strong>
+<br>
+<br>
 
 
