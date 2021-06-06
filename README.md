@@ -10,6 +10,15 @@ Currently supports Connect 4 and Tic Tac Toe
 ![](images/home_screen.jpg)
 <br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Home Screen where the user can start up the bot</strong>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong>Home Screen where the user can start up the bot</strong>
+
+<br>
+
+
+![](images/start_menu.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong> Start Menu -  User selects which game to play </strong>
+<br>
 
 
