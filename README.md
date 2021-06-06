@@ -8,8 +8,7 @@ Currently supports Connect 4 and Tic Tac Toe
 
 ![](images/home_screen.jpg)
 <br>
-<img src="images/home_screen.jpg" width="400" height="700">
-<br>
+
 <br>
 **Home Screen where the user can start up the bot**
 
