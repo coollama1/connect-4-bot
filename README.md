@@ -6,6 +6,8 @@ Currently supports Connect 4 and Tic Tac Toe
 
 ## Home Screen
 
+![](images/home_screen.jpg)
+<br>
 <img src="images/home_screen.jpg" width="400" height="700">
 <br>
 <br>
