@@ -66,6 +66,23 @@ Currently supports Connect 4 and Tic Tac Toe
 ![](images/tic_tac_toe_win.jpg)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 * <strong> The player is notified once they win the game </strong>
-* <strong>Number of adjacent matching symbols must equal to <br> the number set at the beginning of the game</strong>
+* <strong>Number of adjacent matching symbols must equal to the <br> number set at the beginning of the game</strong>
+<br>
+<br>
+
+## Connect 4 Board
+![](images/connect_4_layout.jpg)
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong> Connect 4 board layout </strong>
+<br>
+<br>
+
+![](images/connect_4_win.jpg)
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong> Connect 4 player win </strong>
 <br>
 <br>
