@@ -1,3 +1,4 @@
-#Connect 4 TG Bot
+# Telegram Board Game Bot
 
-**asdada**
+
+![](src/main/resources/First_Bot_Tutorial_Gif.gif)
