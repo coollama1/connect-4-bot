@@ -1,12 +1,7 @@
 package com.coolprojects.game.components;
 
-import com.coolprojects.utilities.Utilities;
-import com.google.common.primitives.Ints;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Board {
     public static int PRIMARY_SYMBOL_VALUE = 1;
@@ -46,9 +41,9 @@ public abstract class Board {
     }
 
     public int checkForMatches(int numberOfMatches){
-        ArrayList<ArrayList<Integer>> listOfRows = getAllRows();
-        ArrayList<ArrayList<Integer>> listOfColumns = getAllColumns();
-        ArrayList<ArrayList<Integer>> listOfDiagonals = getAllDiagonals();
+        List<List<Integer>> listOfRows = getAllRows();
+        List<List<Integer>> listOfColumns = getAllColumns();
+        List<List<Integer>> listOfDiagonals = getAllDiagonals();
         int rowMatchResult = checkAllListsForMatches(listOfRows,numberOfMatches);
         int columnMatchResult = checkAllListsForMatches(listOfColumns,numberOfMatches);
         int diagonalMatchResult = checkAllListsForMatches(listOfDiagonals,numberOfMatches);
@@ -65,8 +60,8 @@ public abstract class Board {
         return NO_MATCHES;
     }
 
-    protected int checkAllListsForMatches(ArrayList<ArrayList<Integer>> listOfLists, int numberOfMatches){
-        for(ArrayList<Integer> currentListOfSymbols : listOfLists){
+    protected int checkAllListsForMatches(List<List<Integer>> listOfLists, int numberOfMatches){
+        for(List<Integer> currentListOfSymbols : listOfLists){
             int matchResult = checkListForMatches(currentListOfSymbols,numberOfMatches);
             if(matchResult != NO_MATCHES){
                 return matchResult;
@@ -75,7 +70,7 @@ public abstract class Board {
         return NO_MATCHES;
     }
 
-    protected int checkListForMatches(ArrayList<Integer> listOfSymbols, int numberOfMatches){
+    protected int checkListForMatches(List<Integer> listOfSymbols, int numberOfMatches){
         for(int c = 0; c < listOfSymbols.size(); c++){
             int initialSymbolValue = listOfSymbols.get(c);
             if(initialSymbolValue != EMPTY_SYMBOL_VALUE){
@@ -102,34 +97,42 @@ public abstract class Board {
         return NO_MATCHES;
     }
 
-    protected ArrayList<ArrayList<Integer>> getAllRows(){
-        ArrayList<ArrayList<Integer>> listOfRows = new ArrayList<>();
+    private List<Integer> intArrayToList(int[] array){
+        List<Integer> arrayList = new ArrayList<>();
+        for(int currentNumber : array){
+            arrayList.add(currentNumber);
+        }
+        return arrayList;
+    }
+
+    protected List<List<Integer>> getAllRows(){
+        List<List<Integer>> listOfRows = new ArrayList<>();
         for(int c = 0; c < getNumberOfRows(); c++){
             int [] currentRowArray = board[c];
-            ArrayList<Integer> currentRowList = Utilities.intArrayToList(currentRowArray);
+            List<Integer> currentRowList = intArrayToList(currentRowArray);
             listOfRows.add(currentRowList);
         }
         return listOfRows;
     }
 
-    protected ArrayList<ArrayList<Integer>> getAllColumns(){
-        ArrayList<ArrayList<Integer>> listOfColumns = new ArrayList<>();
+    protected List<List<Integer>> getAllColumns(){
+        List<List<Integer>> listOfColumns = new ArrayList<>();
         for(int c = 0; c < getNumberOfCols(); c++){
-            ArrayList<Integer> currentColumn = columnToList(c);
+            List<Integer> currentColumn = columnToList(c);
             listOfColumns.add(currentColumn);
         }
         return listOfColumns;
     }
 
-    protected ArrayList<ArrayList<Integer>> getAllDiagonals(){
-        ArrayList<ArrayList<Integer>> listOfDiagonals = new ArrayList<>();
+    protected List<List<Integer>> getAllDiagonals(){
+        List<List<Integer>> listOfDiagonals = new ArrayList<>();
         for(int c = 0; c < getNumberOfCols(); c++){
-            ArrayList<Integer> currentDiagonal = diagonalToList(0,c);
+            List<Integer> currentDiagonal = diagonalToList(0,c);
             listOfDiagonals.add(currentDiagonal);
         }
         for(int c = 0; c < getNumberOfRows(); c++){
-            ArrayList<Integer> currentDiagonal = diagonalToList(c,0);
-            ArrayList<Integer> currentReverseDiagonal = diagonalToListReverseRows(c,0);
+            List<Integer> currentDiagonal = diagonalToList(c,0);
+            List<Integer> currentReverseDiagonal = diagonalToListReverseRows(c,0);
             listOfDiagonals.add(currentDiagonal);
             listOfDiagonals.add(currentReverseDiagonal);
 
@@ -138,8 +141,8 @@ public abstract class Board {
     }
 
 
-    protected ArrayList<Integer> diagonalToList(int startRow,int startColumn){
-        ArrayList<Integer> diagonal = new ArrayList<>();
+    protected List<Integer> diagonalToList(int startRow,int startColumn){
+        List<Integer> diagonal = new ArrayList<>();
         for(int c = startRow, d = startColumn; c < getNumberOfRows() &&
                 d < getNumberOfCols(); c++,d++){
                 diagonal.add(board[c][d]);
@@ -147,16 +150,16 @@ public abstract class Board {
         return diagonal;
     }
 
-    protected ArrayList<Integer> diagonalToListReverseRows(int startRow, int startColumn){
-        ArrayList<Integer> diagonal = new ArrayList<>();
+    protected List<Integer> diagonalToListReverseRows(int startRow, int startColumn){
+        List<Integer> diagonal = new ArrayList<>();
         for(int c = startRow, d = startColumn; c >= 0 && d < getNumberOfCols(); c--,d++){
             diagonal.add(board[c][d]);
         }
         return diagonal;
     }
 
-    protected ArrayList<Integer> columnToList(int targetColumn){
-        ArrayList<Integer> column = new ArrayList<>();
+    protected List<Integer> columnToList(int targetColumn){
+        List<Integer> column = new ArrayList<>();
         for(int c = 0; c < getNumberOfRows(); c++){
             column.add(board[c][targetColumn]);
         }

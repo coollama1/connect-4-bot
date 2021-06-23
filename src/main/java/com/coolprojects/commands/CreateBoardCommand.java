@@ -5,8 +5,8 @@ import com.coolprojects.game.components.ConnectFourBoard;
 import com.coolprojects.game.components.TicTacToeBoard;
 import com.coolprojects.game.state.GameBoardType;
 import com.coolprojects.game.state.GameState;
-import com.coolprojects.updatehandlers.CallbackValues;
-import com.coolprojects.utilities.Utilities;
+import com.coolprojects.handlers.CallbackValues;
+import com.coolprojects.handlers.MessageHandler;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -34,7 +34,7 @@ public class CreateBoardCommand extends BotCommand {
                              "# of rows: 3-8\n# of columns: 3-7\n\n" +
                              "**Connect 4 Board**\n" +
                              "# of rows: 4-12\n# of columns: 4-7";
-        Utilities.sendMessage(absSender,chatId,errorMessage,true);
+        new MessageHandler().sendMessage(absSender,chatId,errorMessage,true);
     }
 
     public static void runCommand(AbsSender absSender, Long chatId,String [] commandParameters){
@@ -60,24 +60,7 @@ public class CreateBoardCommand extends BotCommand {
                     commandFailed(absSender,chatId);
                     return;
                 }
-                String message = "Here are the indices of the board\n\n" +
-                                newGameBoard.getIndexedBoardString() + "\n" +
-                                newGameBoard.getInstructions() + "\n\n" +
-                                "Before you begin, tell me which " +
-                                "game mode you want";
-                InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-                List<List<InlineKeyboardButton>> buttonRows = new ArrayList<>();
-                List<InlineKeyboardButton> firstRow = new ArrayList<>();
-                InlineKeyboardButton singlePlayerButton = new InlineKeyboardButton();
-                InlineKeyboardButton multiplayerButton = new InlineKeyboardButton();
-
-                singlePlayerButton.setText("Single Player").setCallbackData(CallbackValues.SET_SINGLE_PLAYER);
-                multiplayerButton.setText("Multiplayer").setCallbackData(CallbackValues.SET_MULTIPLAYER);
-                firstRow.add(singlePlayerButton);
-                firstRow.add(multiplayerButton);
-                buttonRows.add(firstRow);
-                inlineKeyboardMarkup.setKeyboard(buttonRows);
-                Utilities.sendMessageWithMarkup(absSender,chatId,message,true,inlineKeyboardMarkup);
+                sendCreateBoardMessage(absSender, chatId, newGameBoard);
 
                 GameState.setBoardChosen(true);
                 GameState.setGameInitiated(false);
@@ -90,6 +73,27 @@ public class CreateBoardCommand extends BotCommand {
         }catch(Exception e){
             commandFailed(absSender,chatId);
         }
+    }
+
+    private static void sendCreateBoardMessage(AbsSender absSender, Long chatId, Board newGameBoard) {
+        String message = "Here are the indices of the board\n\n" +
+                        newGameBoard.getIndexedBoardString() + "\n" +
+                        newGameBoard.getInstructions() + "\n\n" +
+                        "Before you begin, tell me which " +
+                        "game mode you want";
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> buttonRows = new ArrayList<>();
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        InlineKeyboardButton singlePlayerButton = new InlineKeyboardButton();
+        InlineKeyboardButton multiplayerButton = new InlineKeyboardButton();
+
+        singlePlayerButton.setText("Single Player").setCallbackData(CallbackValues.SET_SINGLE_PLAYER);
+        multiplayerButton.setText("Multiplayer").setCallbackData(CallbackValues.SET_MULTIPLAYER);
+        firstRow.add(singlePlayerButton);
+        firstRow.add(multiplayerButton);
+        buttonRows.add(firstRow);
+        inlineKeyboardMarkup.setKeyboard(buttonRows);
+        new MessageHandler().sendMessageWithMarkup(absSender,chatId,message,true,inlineKeyboardMarkup);
     }
 
     @Override

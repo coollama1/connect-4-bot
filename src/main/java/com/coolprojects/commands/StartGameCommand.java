@@ -1,7 +1,7 @@
 package com.coolprojects.commands;
 
 import com.coolprojects.game.state.GameState;
-import com.coolprojects.utilities.Utilities;
+import com.coolprojects.handlers.MessageHandler;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -21,24 +21,24 @@ public class StartGameCommand extends BotCommand {
                 String username = user.getFirstName();
                 String initiationMessage = "The game has begun, and " + username +
                         " goes first\n\n" + boardString;
-                Utilities.sendMessage(absSender,chat.getId(),initiationMessage,true);
+                new MessageHandler().sendMessage(absSender,chat.getId(),initiationMessage,true);
             }
             else{
-                nonParticipatingUser(absSender,chat.getId());
+                sendNonParticipatingUserMessage(absSender,chat.getId());
             }
         }
         else{
-            gameNotInitiated(absSender,chat.getId());
+            sendGameNotInitiatedMessage(absSender,chat.getId());
         }
     }
 
-    private void nonParticipatingUser(AbsSender absSender, Long chatId){
+    private void sendNonParticipatingUserMessage(AbsSender absSender, Long chatId){
         String errorMessage = "Sorry, you're not part of this game";
-        Utilities.sendMessage(absSender,chatId,errorMessage,false);
+        new MessageHandler().sendMessage(absSender,chatId,errorMessage,false);
     }
 
-    private void gameNotInitiated(AbsSender absSender,Long chatId){
+    private void sendGameNotInitiatedMessage(AbsSender absSender, Long chatId){
         String errorMessage = "Game must be set up first before it can be initiated";
-        Utilities.sendMessage(absSender,chatId,errorMessage,false);
+        new MessageHandler().sendMessage(absSender,chatId,errorMessage,false);
     }
 }

@@ -1,14 +1,12 @@
 package com.coolprojects.commands;
 
-import com.coolprojects.utilities.Utilities;
+import com.coolprojects.handlers.MessageHandler;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class StartCommand extends BotCommand {
         buttonRows.add(firstButtonRow);
         inLineMarkup.setKeyboard(buttonRows);
 
-        Utilities.sendMessageWithMarkup(absSender,chatId,message,true,inLineMarkup);
+        new MessageHandler().sendMessageWithMarkup(absSender,chatId,message,true,inLineMarkup);
 
     }
 

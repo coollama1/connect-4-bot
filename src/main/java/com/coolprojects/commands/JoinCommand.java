@@ -2,7 +2,7 @@ package com.coolprojects.commands;
 
 import com.coolprojects.game.state.GameState;
 import com.coolprojects.game.state.GameType;
-import com.coolprojects.utilities.Utilities;
+import com.coolprojects.handlers.MessageHandler;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -26,27 +26,27 @@ public class JoinCommand extends BotCommand {
                 askForSymbols(absSender,chat.getId());
             }
             else{
-                playerAlreadyInGame(absSender,chat.getId());
+                sendPlayerAlreadyInGameMessage(absSender,chat.getId());
             }
         }
         else{
-            gameNotSetUp(absSender,chat.getId());
+            sendGameNotSetUpMessage(absSender,chat.getId());
         }
     }
 
-    private void playerAlreadyInGame(AbsSender absSender, Long chatId){
+    private void sendPlayerAlreadyInGameMessage(AbsSender absSender, Long chatId){
         String errorMessage = "You're already in the game, you can't rejoin";
-        Utilities.sendMessage(absSender,chatId,errorMessage,false);
+        new MessageHandler().sendMessage(absSender,chatId,errorMessage,false);
     }
 
     private void askForSymbols(AbsSender absSender, Long chatId){
         String matchingSymbolMessage = "How many symbols in a row does a player need to win? You can" + "\n" +
                 "                            \"either type it in or use the matches command. (e.g. /matches 3)\";";
-        Utilities.sendMessage(absSender,chatId,matchingSymbolMessage, false);
+        new MessageHandler().sendMessage(absSender,chatId,matchingSymbolMessage, false);
     }
 
-    private void gameNotSetUp(AbsSender absSender, Long chatId){
+    private void sendGameNotSetUpMessage(AbsSender absSender, Long chatId){
         String errorMessage = "Make sure you set up a new multiplayer game before using the /join command";
-        Utilities.sendMessage(absSender,chatId,errorMessage,false);
+        new MessageHandler().sendMessage(absSender,chatId,errorMessage,false);
     }
 }
