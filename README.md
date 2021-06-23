@@ -6,6 +6,28 @@ Currently supports Connect 4 and Tic Tac Toe
 <br>
 <br>
 
+
+## Tic Tac Toe Board Demo
+
+![](images/tic_tac_toe_board_intro.gif)
+
+<br>
+<br>
+
+## Changing Board Symbol
+![](images/changing_board_symbol.gif)
+
+<br>
+<br>
+
+## Connect 4 Demo
+
+![](images/connect_4_board_intro.gif)
+
+<br>
+<br>
+
+
 ## Home Screen / Start Menu
 
 ![](images/home_screen.jpg)
