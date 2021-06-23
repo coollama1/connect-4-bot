@@ -2,10 +2,9 @@
 <br>
 Telegram bot that allows users to select from a variety of board games to simulate, and play in either single player or multiplayer mode.
 <br><br>
-Currently supports Connect 4 and Tic Tac Toe
+In order to use access the bot, simply type in the <strong> @TicTacBoardBot</strong> username into any chat on the Telegram mobile/desktop app, and the bot chat should pop up.
 <br>
 <br>
-
 
 ## Tic Tac Toe Board Demo
 
