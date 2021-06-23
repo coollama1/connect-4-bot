@@ -2,7 +2,7 @@
 <br>
 Telegram bot that allows users to select from a variety of board games to simulate, and play in either single player or multiplayer mode.
 <br><br>
-In order to use access the bot, simply type in the <strong> @TicTacBoardBot</strong> username into any chat on the Telegram mobile/desktop app, and the bot chat should pop up.
+To use access the bot, type in <strong> @TicTacBoardBot</strong> into any chat Telegram
 <br>
 <br>
 
